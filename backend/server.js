@@ -1,9 +1,16 @@
 const express=require('express');
+const colors=require('colors')
 const dontenv=require('dotenv').config();
+const connectDB=require('./config/db');
+
 const port=process.env.PORT || 8000;
 const app=express()
-const router=express.Router()
 const {errorHandler}=require('./middleware/errorMiddleware');
+connectDB()
+
+
+
+
 
 //adding middleware to further specify express instance behavior
 

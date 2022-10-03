@@ -8,6 +8,7 @@
  */
 const errorHandler=(err,req,res,next)=>{
     const statusCode=res.statusCode ? res.statusCode:500;
+    console.log({mesage:err.message, stack:err.stack})
     //500 being a generic server error
     res.status(statusCode)
     res.json({
