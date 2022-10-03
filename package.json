@@ -6,10 +6,10 @@
   "name": "quickresttuto",
   "version": "1.0.0",
   "description": " Goal seter fir youtube tutorial",
-  "main": " index.tsx",
+  "main": " index.js",
   "scripts": {
-    "start": "node backend/server.tsx",
-    "server": "nodemon backend/server.tsx"
+    "start": "node backend/server.js",
+    "server": "nodemon backend/server.js"
   },
   "author": "MinoThauros",
   "license": "ISC",
