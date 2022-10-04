@@ -1,5 +1,22 @@
 const mongoose=require('mongoose');
 
+var mongoOptions =
+{
+    db: {safe: true},
+    server: {
+        socketOptions: {
+            keepAlive: 1
+        }
+    },
+    replset: {
+        rs_name: 'myReplSet',
+        socketOptions: {
+            keepAlive: 1
+        }
+    }
+};
+
+
 const connectDB=async()=>{
     try{
         const conn=await mongoose.connect(process.env.MONGO_URI)

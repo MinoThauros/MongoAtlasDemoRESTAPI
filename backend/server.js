@@ -17,11 +17,11 @@ connectDB()
 app.use(express.json())
 app.use(express.urlencoded({extended:false}))
 
+app.use(errorHandler)
 
 //linking a folder to a certain link
 app.use('/api/goals',require('./routes/goalRoutes'))
-app.use(errorHandler)
-
+app.use('/api/users',require('./routes/userRouter'))
 
 
 app.get('/',(req,res,next)=>{
