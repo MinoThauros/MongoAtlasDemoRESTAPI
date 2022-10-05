@@ -3,69 +3,71 @@ const User=require('../models/userModel');
 const jwt=require('jsonwebtoken');
 const bcrypt=require('bcryptjs');
 
-/**
- * registers a new user
- * @param {*} req 
- * @param {*} res 
- * @route POST api/users/me 
- * @access public
- */
-const regiserUser= asyncHandler(async(req,res)=>{
-    const {name,email,password}=req.body
-    if (!name || !email || !password){
-        res.status(400)
-        throw new Error('Please add all fields')
+// @desc    Register new user
+// @route   POST /api/users
+// @access  Public
+const registerUser = asyncHandler(async (req, res) => {
+    const { name, email, password } = req.body
+  
+    if (!name || !email || !password) {
+      res.status(400)
+      throw new Error('Please add all fields')
     }
-    const userExists=User.findOne({email})
-    if(!userExists){
-        res.status(400)
-        //console.log(userExists)
-        
-        throw new Error('User already exists')
-
+  
+    // Check if user exists
+    const userExists = await User.findOne({ email })
+  
+    if (userExists) {
+      res.status(400)
+      throw new Error('User already exists')
     }
-
-    //hasing password (read about it)
-    const salt=await bcrypt.genSalt(10);
-    const hashedPassword=await bcrypt.hash(password,salt)
-
-    const user=await User.create({
-        name,
-        email,
-        password:hashedPassword
+  
+    // Hash password
+    const salt = await bcrypt.genSalt(10)
+    const hashedPassword = await bcrypt.hash(password, salt)
+  
+    // Create user
+    const user = await User.create({
+      name,
+      email,
+      password: hashedPassword,
     })
-
-    if (user){
-        res.status(201).json({
-            message:'register user',//sends it to a test DB as the collection wasn't specified
-            _id:user.id,
-            user:user.email,
-            password:user.password
-
-    
-    });
-    }else{
-        res.status(400)
-        throw new Error('Invalid user')
+  
+    if (user) {
+      res.status(201).json({
+        _id: user.id,
+        name: user.name,
+        email: user.email,
+        //token: generateToken(user._id),
+      })
+    } else {
+      res.status(400)
+      throw new Error('Invalid user data')
     }
+  })
+  
 
-})
-
-/**
- * Authenticates a user
- * @param {*} req 
- * @param {*} res 
- * @route POST api/users/login
- * @access private
- */
-const loginUser= asyncHandler(async(req,res)=>{
-    const user=await User.findById(req.params.id)
-
-    res.status(200).json({
-        message:'loging you in',
-        user:user
-    })
-});
+// @desc    Authenticate a user
+// @route   POST /api/users/login
+// @access  Public
+const loginUser = asyncHandler(async (req, res) => {
+    const { email, password } = req.body
+  
+    // Check for user email
+    const user = await User.findOne({ email })
+  
+    if (user && (await bcrypt.compare(password, user.password))) {
+      res.json({
+        _id: user.id,
+        name: user.name,
+        email: user.email,
+        //token: generateToken(user._id),
+      })
+    } else {
+      res.status(400)
+      throw new Error('Invalid credentials')
+    }
+  })
 
 /**
  * Updates user
@@ -115,7 +117,7 @@ const updateUser= asyncHandler(async(req,res)=>{
     })
 });
 module.exports={
-    regiserUser,
+    registerUser,
     loginUser,
     updateUser,
     getMe 

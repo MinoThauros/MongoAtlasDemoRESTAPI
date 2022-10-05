@@ -1,10 +1,10 @@
 const express=require('express');
 const router=express.Router();
-const {loginUser,regiserUser,getMe}=require('../controllers/userController')
+const {loginUser,registerUser,getMe}=require('../controllers/userController')
 
 
 
-router.post('/',regiserUser)
+router.post('/',registerUser)
 //create new user
 router.post('/login',loginUser)
 //verify and return user 
