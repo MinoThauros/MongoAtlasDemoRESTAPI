@@ -8,7 +8,8 @@ const Goal=require('../models/goalModel')
  * @access Private (after auth is added)
  */
 const getGoals= asyncHandler(async(req,res)=>{
-    const goals=await Goal.find()
+    const goals=await Goal.find({user:req.user.id})
+    //as req.user is yieled by the protect middleware
 
     res.status(200).json({
         message:'getting goals',
@@ -54,6 +55,7 @@ const setGoals= asyncHandler(async(req,res)=>{
     }
 
     const goal=await Goal.create({
+        user:req.user.id,//creates the user field from the middleware who processes the token and finds the user
         text:req.body.text
     })
     console.log(process.env.MONGO_URI)

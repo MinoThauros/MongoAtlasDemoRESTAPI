@@ -6,7 +6,7 @@ const goalSchema=Schema({
      * 
      */
     user:{
-        type:mongoose.Schema.Types.ObjectId,
+        type:mongoose.Schema.Types.ObjectId,//the user's object id
         required:true,
         ref:'User'//associating a user wuth a goal
     }
