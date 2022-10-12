@@ -32,7 +32,7 @@ const registerUser = asyncHandler(async (req, res) => {
       name,
       email,
       password: hashedPassword,
-    })
+    })//creates an instance of user both in the DB and as a local variable 
   
     if (user) {
       res.status(201).json({
@@ -40,6 +40,7 @@ const registerUser = asyncHandler(async (req, res) => {
         name: user.name,
         email: user.email,
         token: generateToken(user._id),
+        //sending the signed jwt as a response
       })
     } else {
       res.status(400)
@@ -65,6 +66,7 @@ const loginUser = asyncHandler(async (req, res) => {
         name: user.name,
         email: user.email,
         token: generateToken(user._id),
+        //we generate another token on login
       })
     } else {
       res.status(400)
